@@ -1,27 +1,31 @@
 package com.applet.controller;
 
+import com.applet.utils.JwtUtil;
+import com.applet.utils.result.Result;
+import com.applet.utils.result.ResultUtil;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class LoginController {
 
-//    @PostMapping("login")
-//    public void login(HttpServletResponse response, String username, String password) {
-//        System.out.println(username);
-//        System.out.println(password);
-//        if (username.trim().equals("sa") && password.trim().equals("sa")) {
-//            Cookie cookie = new Cookie("token", JwtUtil.createToken(username));
-//            cookie.setMaxAge(30 * 60);// 设置为30min
-//            cookie.setPath("/");
-//            response.addCookie(cookie);
-//        }
-//    }
+    @PostMapping("login")
+    public Result login(String username, String password) {
+        Map map = new HashMap();
+        if (username.trim().equals("sa") && password.trim().equals("sa")) {
+            map.put("token", JwtUtil.createToken(username));
+            return ResultUtil.success(map);
+        }
+        return ResultUtil.error(0);
+    }
 
-    @PostMapping("a")
-    public String a(String username, String password) {
-        System.out.println(username);
-        System.out.println(password);
-        return "aaa111";
+    @GetMapping("a")
+    public Result a(String a) {
+        System.out.println(a);
+        return ResultUtil.success("ok");
     }
 }
