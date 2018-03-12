@@ -1,5 +1,7 @@
 package com.applet.service.impl;
 
+import com.applet.entity.SysAdmin;
+import com.applet.repository.LoginRepository;
 import com.applet.service.LoginService;
 import com.applet.utils.result.Result;
 import com.applet.utils.result.ResultUtil;
@@ -7,6 +9,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +26,18 @@ public class LoginServiceImpl implements LoginService {
     @Value("${application.token.secret}")
     private String secret;
 
+    @Autowired
+    private LoginRepository loginRepository;
+
     @Override
     public Result login(String username, String password) {
-        System.out.println(secret);
         Map map = null;
-        //数据库查
-        String pwd = "sa";
         try {
-            if (password.equals(pwd)) {
+            SysAdmin sysAdmin = loginRepository.findByUsername(username);
+            String pwd = sysAdmin.getPassword();
+            if (!sysAdmin.isEnabled()) {
+                return ResultUtil.error(999);
+            } else if (password.equals(pwd)) {
                 map = new HashMap();
                 String token = JWT.create()
                         .withClaim("name", username)

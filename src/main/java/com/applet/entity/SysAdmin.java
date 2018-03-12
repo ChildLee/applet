@@ -11,7 +11,7 @@ public class SysAdmin {
     private String username;
     private String password;
     private boolean enabled;
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<SysRole> roles;
 
     public Long getId() {
