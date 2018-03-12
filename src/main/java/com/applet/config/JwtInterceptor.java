@@ -58,7 +58,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             System.out.println(name.asString());
             //签名密钥
             JWT.require(Algorithm.HMAC256(secret)).build().verify(token);
-        } catch (JWTVerificationException | UnsupportedEncodingException e) {
+        } catch (NullPointerException | JWTVerificationException | UnsupportedEncodingException e) {
             result = false;
         }
         return result;
