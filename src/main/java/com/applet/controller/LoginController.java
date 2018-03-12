@@ -1,31 +1,24 @@
 package com.applet.controller;
 
-import com.applet.utils.JwtUtil;
+import com.applet.service.LoginService;
+import com.applet.utils.StringUtil;
 import com.applet.utils.result.Result;
 import com.applet.utils.result.ResultUtil;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class LoginController {
 
+    @Autowired
+    private LoginService loginService;
+
     @PostMapping("login")
     public Result login(String username, String password) {
-        Map map = new HashMap();
-        if (username.trim().equals("sa") && password.trim().equals("sa")) {
-            map.put("token", JwtUtil.createToken(username));
-            return ResultUtil.success(map);
+        if (StringUtil.isNull(username.trim(), password.trim())) {
+            return ResultUtil.error(10001);
         }
-        return ResultUtil.error(0);
-    }
-
-    @GetMapping("a")
-    public Result a(String a) {
-        System.out.println(a);
-        return ResultUtil.success("ok");
+        return loginService.login(username, password);
     }
 }

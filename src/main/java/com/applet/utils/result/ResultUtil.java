@@ -40,10 +40,13 @@ public class ResultUtil {
     public static Result error(int code) {
         Result err;
         switch (code) {
-            case 1001:
+            case 678:
+                err = error(678, "用户名或密码错误");
+                break;
+            case 10001:
                 err = error(10001, "参数值为空");
                 break;
-            case 1002:
+            case 10002:
                 err = error(10002, "参数长度不正确");
                 break;
             default:
