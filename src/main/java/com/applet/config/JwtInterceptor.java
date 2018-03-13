@@ -3,8 +3,6 @@ package com.applet.config;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
-import java.util.Map;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
@@ -52,10 +49,10 @@ public class JwtInterceptor implements HandlerInterceptor {
         try {
             Enumeration<String> authorization = request.getHeaders("Authorization");
             String token = authorization.nextElement();
-            DecodedJWT jwt = JWT.decode(token);
-            Map<String, Claim> claims = jwt.getClaims();
-            Claim name = claims.get("name");
-            System.out.println(name.asString());
+//            DecodedJWT jwt = JWT.decode(token);
+//            Map<String, Claim> claims = jwt.getClaims();
+//            Claim name = claims.get("name");
+//            System.out.println(name.asString());
             //签名密钥
             JWT.require(Algorithm.HMAC256(secret)).build().verify(token);
         } catch (NullPointerException | JWTVerificationException | UnsupportedEncodingException e) {

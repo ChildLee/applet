@@ -34,6 +34,9 @@ public class LoginServiceImpl implements LoginService {
         Map map = null;
         try {
             SysAdmin sysAdmin = loginRepository.findByUsername(username);
+            if (sysAdmin == null) {
+                return ResultUtil.error(678);
+            }
             String pwd = sysAdmin.getPassword();
             if (!sysAdmin.isEnabled()) {
                 return ResultUtil.error(999);
@@ -50,6 +53,7 @@ public class LoginServiceImpl implements LoginService {
             }
         } catch (UnsupportedEncodingException e) {
             log.error("登录生成token时出错,字符编码不受支持");
+            return ResultUtil.error(-1);
         }
         return ResultUtil.success(map);
     }
