@@ -21,6 +21,14 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        System.out.println(request.getMethod());
+        //获取完整请求路径
+        System.out.println(request.getRequestURL());
+        //获取除了域名外的请求数据
+        System.out.println(request.getRequestURI());
+        //获取请求参数
+        System.out.println(request.getQueryString());
+
         //验证token是否有效
         Boolean result = verifyToken(request, response);
 
