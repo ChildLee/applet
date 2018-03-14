@@ -28,7 +28,6 @@ public class JwtInterceptor implements HandlerInterceptor {
         System.out.println(request.getRequestURI());
         //获取请求参数
         System.out.println(request.getQueryString());
-
         //验证token是否有效
         Boolean result = verifyToken(request, response);
 
