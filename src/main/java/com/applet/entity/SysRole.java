@@ -1,7 +1,6 @@
 package com.applet.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class SysRole {
@@ -11,8 +10,6 @@ public class SysRole {
     private String name;
     @Column(name = "`desc`")
     private String desc;
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    private List<SysPermission> permissions;
 
     public Long getId() {
         return id;
@@ -38,11 +35,13 @@ public class SysRole {
         this.desc = desc;
     }
 
-    public List<SysPermission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<SysPermission> permissions) {
-        this.permissions = permissions;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("SysRole{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", desc='").append(desc).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

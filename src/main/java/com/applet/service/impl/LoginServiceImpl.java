@@ -1,7 +1,7 @@
 package com.applet.service.impl;
 
 import com.applet.entity.SysAdmin;
-import com.applet.repository.LoginRepository;
+import com.applet.mapper.LoginMapper;
 import com.applet.service.LoginService;
 import com.applet.utils.result.Result;
 import com.applet.utils.result.ResultUtil;
@@ -27,20 +27,25 @@ public class LoginServiceImpl implements LoginService {
     private String secret;
 
     @Autowired
-    private LoginRepository loginRepository;
+    private LoginMapper loginMapper;
 
     @Override
     public Result login(String username, String password) {
-        Map map = null;
+        Map map;
         try {
-            SysAdmin sysAdmin = loginRepository.findByUsername(username);
+            //数据库查密码
+            SysAdmin sysAdmin = loginMapper.findByUsername(username);
+            System.out.println(sysAdmin);
+            //判断账号是否存在
             if (sysAdmin == null) {
                 return ResultUtil.error(678);
             }
-            String pwd = sysAdmin.getPassword();
+            //判断账户是否锁定
             if (!sysAdmin.isEnabled()) {
                 return ResultUtil.error(999);
-            } else if (password.equals(pwd)) {
+            }
+            //判断密码正确性
+            if (password.equals(sysAdmin.getPassword())) {
                 map = new HashMap();
                 String token = JWT.create()
                         .withClaim("name", username)
@@ -48,6 +53,7 @@ public class LoginServiceImpl implements LoginService {
                         .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                         .sign(Algorithm.HMAC256(secret));
                 map.put("token", token);
+                map.put("role", sysAdmin.getRoles());
             } else {
                 return ResultUtil.error(678);
             }

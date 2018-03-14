@@ -13,8 +13,6 @@ public class SysAdmin {
     private boolean enabled;
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private List<SysRole> roles;
-    @OneToOne
-    private SysAdminInfo adminInfo;
 
     public Long getId() {
         return id;
@@ -56,11 +54,15 @@ public class SysAdmin {
         this.roles = roles;
     }
 
-    public SysAdminInfo getAdminInfo() {
-        return adminInfo;
-    }
-
-    public void setAdminInfo(SysAdminInfo adminInfo) {
-        this.adminInfo = adminInfo;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("SysAdmin{");
+        sb.append("id=").append(id);
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", enabled=").append(enabled);
+        sb.append(", roles=").append(roles);
+        sb.append('}');
+        return sb.toString();
     }
 }
