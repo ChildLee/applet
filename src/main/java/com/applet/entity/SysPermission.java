@@ -9,8 +9,7 @@ public class SysPermission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Column(name = "`desc`")
-    private String desc;
+    private String path;
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     private List<SysRole> roles;
 
@@ -30,12 +29,12 @@ public class SysPermission {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getPath() {
+        return path;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public List<SysRole> getRoles() {
@@ -51,7 +50,7 @@ public class SysPermission {
         final StringBuilder sb = new StringBuilder("SysPermission{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", desc='").append(desc).append('\'');
+        sb.append(", path='").append(path).append('\'');
         sb.append(", roles=").append(roles);
         sb.append('}');
         return sb.toString();
