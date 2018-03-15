@@ -41,11 +41,11 @@ public class LoginServiceImpl implements LoginService {
                 return ResultUtil.error(678);
             }
             //判断账户是否锁定
-            if (!sysAdmin.isEnabled()) {
+            else if (!sysAdmin.isEnabled()) {
                 return ResultUtil.error(677);
             }
             //判断密码正确性
-            if (password.equals(sysAdmin.getPassword())) {
+            else if (password.equals(sysAdmin.getPassword())) {
                 map = new HashMap();
                 String token = JWT.create()
                         .withClaim("name", username)
