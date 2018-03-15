@@ -31,7 +31,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public Result login(String username, String password) {
-        Map map;
+        Map map = null;
         try {
             //数据库查密码
             SysAdmin sysAdmin = loginMapper.findByUsername(username);
@@ -42,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
             }
             //判断账户是否锁定
             if (!sysAdmin.isEnabled()) {
-                return ResultUtil.error(999);
+                return ResultUtil.error(677);
             }
             //判断密码正确性
             if (password.equals(sysAdmin.getPassword())) {

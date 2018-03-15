@@ -28,6 +28,7 @@ public class ResultUtil {
     public static Result error(int code, String msg) {
         result.setCode(code);
         result.setMsg(msg);
+        result.setData(null);
         return result;
     }
 
@@ -46,11 +47,11 @@ public class ResultUtil {
             case 10002:
                 err = error(10002, "参数长度不正确");
                 break;
+            case 677:
+                err = error(677, "账户已锁定");
+                break;
             case 678:
                 err = error(678, "用户名或密码错误");
-                break;
-            case 999:
-                err = error(999, "账户已锁定");
                 break;
             default:
                 err = error(-1, "服务器内部错误");
