@@ -1,7 +1,13 @@
 package com.applet.service;
 
-import com.applet.entity.SysAdmin;
+import com.applet.entity.SysAccess;
+
+import java.util.List;
 
 public interface AdminService {
-    SysAdmin findAllUser();
+    List<SysAccess> getAccess();
+
+    Boolean createAccess(SysAccess access);
+
+    Boolean deleteAccess(SysAccess access);
 }

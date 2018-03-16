@@ -1,26 +1,30 @@
 package com.applet;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+
 public class ApplicationTest {
+
+    Long a;
 
     @Test
     public void asList() {
-        a("a", "b", "c");
+        a(a, "a", new Long(3));
     }
 
-    public void a(String... patterns) {
-        List<String> params = Arrays.asList(patterns);
-        for (String param : params) {
-            System.out.println(param);
+    public void a(Object... patterns) {
+        List<Object> params = Arrays.asList(patterns);
+        for (Object param : params) {
+            if (param == null) {
+                System.out.println(1);
+            } else if (param instanceof String) {
+                System.out.println(2);
+            } else if (param instanceof Long) {
+                System.out.println(3);
+            }
         }
     }
 }

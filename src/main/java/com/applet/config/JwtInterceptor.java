@@ -6,7 +6,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,14 +20,13 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        System.out.println(request.getMethod());
-        //获取完整请求路径
-        System.out.println(request.getRequestURL());
-        //获取除了域名外的请求数据
-        System.out.println(request.getRequestURI());
-        //获取请求参数
-        System.out.println(request.getQueryString());
-        System.out.println("666");
+//        System.out.println(request.getMethod());
+//        //获取完整请求路径
+//        System.out.println(request.getRequestURL());
+//        //获取除了域名外的请求数据
+//        System.out.println(request.getRequestURI());
+//        //获取请求参数
+//        System.out.println(request.getQueryString());
         //验证token是否有效
         Boolean result = verifyToken(request, response);
 
@@ -37,16 +35,6 @@ public class JwtInterceptor implements HandlerInterceptor {
             return false;
         }
         return result;
-    }
-
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
-        System.out.println("2.请求处理之后，视图被渲染之前调用");
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        System.out.println("3.视图被渲染之后");
     }
 
     /**

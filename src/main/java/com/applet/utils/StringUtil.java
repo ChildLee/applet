@@ -11,10 +11,12 @@ public class StringUtil {
      * @param patterns 需要判断的值
      * @return 空值为true, 否则false
      */
-    public static Boolean isNull(String... patterns) {
-        List<String> params = Arrays.asList(patterns);
-        for (String param : params) {
-            if (null == param || param.isEmpty()) {
+    public static Boolean isNull(Object... patterns) {
+        List<Object> params = Arrays.asList(patterns);
+        for (Object param : params) {
+            if (param == null) {
+                return true;
+            } else if (param instanceof String && ((String) param).isEmpty()) {
                 return true;
             }
         }

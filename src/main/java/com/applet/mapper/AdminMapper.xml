@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.applet.mapper.AdminMapper">
-    <select id="findAllUser" resultType="SysAdmin">
-        select * from sys_admin
+
+    <select id="getAccess" resultType="SysAccess">
+        select * from sys_access
     </select>
+
+    <insert id="createAccess" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_access(`name`,path) VALUES(#{name},#{path})
+        ON DUPLICATE KEY UPDATE `name`=#{name},path=#{path}
+    </insert>
+
+    <delete id="deleteAccess">
+        DELETE FROM sys_access WHERE id=#{id}
+    </delete>
 </mapper>

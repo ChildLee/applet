@@ -1,9 +1,16 @@
 package com.applet.mapper;
 
-import com.applet.entity.SysAdmin;
+import com.applet.entity.SysAccess;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface AdminMapper {
-    SysAdmin findAllUser();
+
+    List<SysAccess> getAccess();
+
+    Boolean createAccess(SysAccess access);
+
+    Boolean deleteAccess(SysAccess access);
 }
