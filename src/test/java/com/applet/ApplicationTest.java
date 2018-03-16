@@ -1,5 +1,6 @@
 package com.applet;
 
+import com.applet.entity.SysAccess;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -12,7 +13,11 @@ public class ApplicationTest {
 
     @Test
     public void asList() {
-        a(a, "a", new Long(3));
+        SysAccess sysAccess = new SysAccess();
+        sysAccess.setId((long) 1);
+        sysAccess.setName("2");
+        sysAccess.setPath("3");
+        a(sysAccess);
     }
 
     public void a(Object... patterns) {
@@ -24,7 +29,10 @@ public class ApplicationTest {
                 System.out.println(2);
             } else if (param instanceof Long) {
                 System.out.println(3);
+            } else if (param instanceof Object) {
+                System.out.println(4);
             }
+
         }
     }
 }

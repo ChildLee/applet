@@ -8,9 +8,12 @@ import java.util.List;
 @Repository
 public interface AdminMapper {
 
-    List<SysAccess> getAccess();
 
     Boolean createAccess(SysAccess access);
 
     Boolean deleteAccess(SysAccess access);
+
+    Boolean updateAccess(SysAccess access);
+
+    List<SysAccess> getAccess();
 }

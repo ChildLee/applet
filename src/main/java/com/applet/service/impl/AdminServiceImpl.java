@@ -14,10 +14,6 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminMapper adminMapper;
 
-    @Override
-    public List<SysAccess> getAccess() {
-        return adminMapper.getAccess();
-    }
 
     @Override
     public Boolean createAccess(SysAccess access) {
@@ -27,5 +23,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Boolean deleteAccess(SysAccess access) {
         return adminMapper.deleteAccess(access);
+    }
+
+    @Override
+    public Boolean updateAccess(SysAccess access) {
+        return adminMapper.updateAccess(access);
+    }
+
+    @Override
+    public List<SysAccess> getAccess() {
+        return adminMapper.getAccess();
     }
 }

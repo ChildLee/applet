@@ -16,7 +16,7 @@ public class StringUtil {
         for (Object param : params) {
             if (param == null) {
                 return true;
-            } else if (param instanceof String && ((String) param).isEmpty()) {
+            } else if (param instanceof String && ((String) param).trim().isEmpty()) {
                 return true;
             }
         }
