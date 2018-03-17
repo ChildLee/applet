@@ -16,7 +16,7 @@ public class LoginController {
 
     @PostMapping("login")
     public Result login(String username, String password) {
-        if (StringUtil.isNull(username.trim(), password.trim())) {
+        if (StringUtil.isNull(username, password)) {
             return ResultUtil.error(10001);
         }
         return loginService.login(username, password);

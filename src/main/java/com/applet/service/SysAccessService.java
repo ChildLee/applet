@@ -1,13 +1,10 @@
-package com.applet.mapper;
+package com.applet.service;
 
 import com.applet.entity.SysAccess;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface AdminMapper {
-
+public interface SysAccessService {
 
     Boolean createAccess(SysAccess access);
 
