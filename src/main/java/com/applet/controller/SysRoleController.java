@@ -42,4 +42,21 @@ public class SysRoleController {
     public Result getRole() {
         return ResultUtil.success(sysRoleService.getRole());
     }
+
+    @PostMapping("roleAccesses")
+    public Result createRoleAccesses(SysRole role) {
+        if (StringUtil.isNull(role.getId(), role.getAccesses())) {
+            return ResultUtil.error(10001);
+        }
+        System.out.println(sysRoleService.getRoleAccesses(role));
+        return ResultUtil.success(sysRoleService.getRoleAccesses(role));
+    }
+
+    @GetMapping("roleAccesses")
+    public Result getRoleAccesses(SysRole role) {
+        if (StringUtil.isNull(role.getId())) {
+            return ResultUtil.error(10001);
+        }
+        return ResultUtil.success(sysRoleService.getRoleAccesses(role));
+    }
 }

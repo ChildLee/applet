@@ -14,7 +14,6 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Autowired
     private SysRoleMapper sysRoleMapper;
 
-
     @Override
     public Boolean createRole(SysRole role) {
         return sysRoleMapper.createRole(role);
@@ -33,5 +32,10 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public List<SysRole> getRole() {
         return sysRoleMapper.getRole();
+    }
+
+    @Override
+    public SysRole getRoleAccesses(SysRole role) {
+        return sysRoleMapper.getRoleAccesses(role);
     }
 }

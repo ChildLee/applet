@@ -10,7 +10,7 @@ public class SysAccess {
     private Long id;
     private String name;
     private String path;
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "accesses")
     private List<SysRole> roles;
 
     public Long getId() {

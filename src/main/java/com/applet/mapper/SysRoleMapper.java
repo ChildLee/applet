@@ -15,4 +15,6 @@ public interface SysRoleMapper {
     Boolean updateRole(SysRole role);
 
     List<SysRole> getRole();
+
+    SysRole getRoleAccesses(SysRole role);
 }

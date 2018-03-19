@@ -13,4 +13,6 @@ public interface SysRoleService {
     Boolean updateRole(SysRole role);
 
     List<SysRole> getRole();
+
+    SysRole getRoleAccesses(SysRole role);
 }
