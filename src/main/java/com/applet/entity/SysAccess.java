@@ -47,7 +47,7 @@ public class SysAccess {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SysPermission{");
+        final StringBuilder sb = new StringBuilder("SysAccess{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", path='").append(path).append('\'');

@@ -5,11 +5,17 @@ import com.applet.service.SysRoleService;
 import com.applet.utils.StringUtil;
 import com.applet.utils.result.Result;
 import com.applet.utils.result.ResultUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.List;
+
 @RestController
 public class SysRoleController {
+
+    private static ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     private SysRoleService sysRoleService;
@@ -44,12 +50,20 @@ public class SysRoleController {
     }
 
     @PostMapping("roleAccesses")
-    public Result createRoleAccesses(SysRole role) {
-        if (StringUtil.isNull(role.getId(), role.getAccesses())) {
+    public Result createRoleAccesses(Integer id, String access) {
+        System.out.println(access);
+        if (StringUtil.isNull(id, access)) {
             return ResultUtil.error(10001);
         }
-        System.out.println(sysRoleService.getRoleAccesses(role));
-        return ResultUtil.success(sysRoleService.getRoleAccesses(role));
+        try {
+            List jsonList = mapper.readValue(access, List.class);
+            System.out.println(jsonList);
+        } catch (IOException e) {
+            System.out.println("权限数组解析错误");
+        }
+
+
+        return null;
     }
 
     @GetMapping("roleAccesses")
