@@ -17,4 +17,8 @@
     <select id="getAccess" resultType="SysAccess">
         SELECT * FROM sys_access
     </select>
+
+    <select id="isExistsAccess" resultType="java.lang.Boolean">
+        SELECT count(*) FROM sys_access WHERE path=#{path}
+    </select>
 </mapper>

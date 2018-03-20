@@ -27,7 +27,7 @@ public class SysRoleController {
         if (StringUtil.isNull(role.getName(), role.getName())) {
             return ResultUtil.error(10001);
         }
-        return sysRoleService.createRole(role) ? ResultUtil.success(role) : null;
+        return sysRoleService.createRole(role) ? ResultUtil.success(role) : ResultUtil.error("角色已存在");
     }
 
     @DeleteMapping("role")

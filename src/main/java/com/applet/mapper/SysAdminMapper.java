@@ -14,6 +14,8 @@ public interface SysAdminMapper {
 
     Boolean updateAdmin(SysAdmin admin);
 
+    Boolean isExistsUsername(SysAdmin admin);
+
     List<SysAdmin> getAdmin();
 
     SysAdmin getAdminRoles(SysAdmin admin);

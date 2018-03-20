@@ -18,7 +18,8 @@ public class SysAccessServiceImpl implements SysAccessService {
     @Transactional
     @Override
     public Boolean createAccess(SysAccess access) {
-        return sysAccessMapper.createAccess(access);
+        Boolean existsAccess = sysAccessMapper.isExistsAccess(access);
+        return existsAccess ? false : sysAccessMapper.createAccess(access);
     }
 
     @Transactional

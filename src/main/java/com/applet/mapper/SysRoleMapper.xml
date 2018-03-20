@@ -29,6 +29,10 @@
         SELECT * FROM sys_role
     </select>
 
+    <select id="isExistsRole" resultType="java.lang.Boolean">
+        SELECT count(*) FROM sys_role WHERE name=#{name}
+    </select>
+
     <select id="getRoleAccesses" resultMap="BaseResultMap">
         SELECT sr.id,sr.desc,sr.name,sa.id a_id,sa.name a_name,sa.path FROM sys_role sr
         LEFT JOIN sys_role_accesses sra on sr.id=sra.role_id

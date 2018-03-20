@@ -18,7 +18,9 @@ public class SysAdminServiceImpl implements SysAdminService {
     @Transactional
     @Override
     public Boolean createAdmin(SysAdmin admin) {
-        return sysAdminMapper.createAdmin(admin);
+        //判断用户名是否存在
+        Boolean existsUsername = sysAdminMapper.isExistsUsername(admin);
+        return existsUsername ? false : sysAdminMapper.createAdmin(admin);
     }
 
     @Transactional
@@ -43,6 +45,7 @@ public class SysAdminServiceImpl implements SysAdminService {
         return sysAdminMapper.getAdminRoles(admin);
     }
 
+    @Transactional
     @Override
     public Boolean createAdminRole(SysAdmin admin) {
         Boolean bool = sysAdminMapper.deleteAdminRoles(admin);

@@ -28,7 +28,7 @@ public class SysAdminController {
             return ResultUtil.error(10001);
         }
         admin.setEnabled(true);
-        return sysAdminService.createAdmin(admin) ? ResultUtil.success(admin) : null;
+        return sysAdminService.createAdmin(admin) ? ResultUtil.success(admin) : ResultUtil.error("用户名已存在");
     }
 
     @DeleteMapping("admin")

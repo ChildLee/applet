@@ -19,6 +19,19 @@ public class ResultUtil {
     }
 
     /**
+     * 提示错误
+     *
+     * @param msg 错误消息
+     * @return
+     */
+    public static Result error(String msg) {
+        result.setCode(666);
+        result.setMsg(msg);
+        result.setData(null);
+        return result;
+    }
+
+    /**
      * 自定义错误码和错误提示
      *
      * @param code 状态码

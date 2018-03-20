@@ -18,7 +18,8 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Transactional
     @Override
     public Boolean createRole(SysRole role) {
-        return sysRoleMapper.createRole(role);
+        Boolean existsRole = sysRoleMapper.isExistsRole(role);
+        return existsRole ? false : sysRoleMapper.createRole(role);
     }
 
     @Transactional

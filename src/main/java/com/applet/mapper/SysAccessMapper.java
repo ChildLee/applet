@@ -14,5 +14,7 @@ public interface SysAccessMapper {
 
     Boolean updateAccess(SysAccess access);
 
+    Boolean isExistsAccess(SysAccess access);
+
     List<SysAccess> getAccess();
 }

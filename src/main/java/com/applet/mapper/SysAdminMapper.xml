@@ -30,6 +30,10 @@
         SELECT * FROM sys_admin
     </select>
 
+    <select id="isExistsUsername" resultType="java.lang.Boolean">
+        SELECT count(*) FROM sys_admin WHERE username=#{username}
+    </select>
+
     <select id="getAdminRoles" resultMap="BaseResultMap">
         SELECT sa.id,sa.enabled,sa.username,sa.`password`,sr.id s_id,sr.`name`,sr.`desc` FROM sys_admin sa
         LEFT JOIN sys_admin_roles sar on sar.admin_id=sa.id

@@ -14,6 +14,8 @@ public interface SysRoleMapper {
 
     Boolean updateRole(SysRole role);
 
+    Boolean isExistsRole(SysRole role);
+
     List<SysRole> getRole();
 
     SysRole getRoleAccesses(SysRole role);
