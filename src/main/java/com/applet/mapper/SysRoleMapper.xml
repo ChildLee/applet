@@ -22,7 +22,7 @@
     </delete>
 
     <update id="updateRole">
-        UPDATE sys_role SET `name`=#{name},`desc`=#{desc} WHERE id=#{id}
+        UPDATE sys_role SET `desc`=#{desc} WHERE id=#{id}
     </update>
 
     <select id="getRole" resultType="SysRole">

@@ -23,7 +23,7 @@
     </delete>
 
     <update id="updateAdmin">
-        UPDATE sys_admin SET username=#{username},password=#{password} WHERE id=#{id}
+        UPDATE sys_admin SET password=#{password} WHERE id=#{id}
     </update>
 
     <select id="getAdmin" resultType="SysAdmin">

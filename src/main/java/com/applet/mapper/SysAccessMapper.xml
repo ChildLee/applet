@@ -11,7 +11,7 @@
     </delete>
 
     <update id="updateAccess">
-        UPDATE sys_access SET `name`=#{name},path=#{path} WHERE id=#{id}
+        UPDATE sys_access SET `name`=#{name} WHERE id=#{id}
     </update>
 
     <select id="getAccess" resultType="SysAccess">
