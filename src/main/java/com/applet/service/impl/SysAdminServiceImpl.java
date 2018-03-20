@@ -37,4 +37,18 @@ public class SysAdminServiceImpl implements SysAdminService {
     public List<SysAdmin> getAdmin() {
         return sysAdminMapper.getAdmin();
     }
+
+    @Override
+    public SysAdmin getAdminRole(SysAdmin admin) {
+        return sysAdminMapper.getAdminRoles(admin);
+    }
+
+    @Override
+    public Boolean createAdminRole(SysAdmin admin) {
+        Boolean bool = sysAdminMapper.deleteAdminRoles(admin);
+        if (admin.getRoles().size() > 0) {
+            bool = sysAdminMapper.createAdminRoles(admin);
+        }
+        return bool;
+    }
 }

@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.applet.mapper.SysAdminMapper">
+    <resultMap id="BaseResultMap" type="SysAdmin">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="enabled" property="enabled"/>
+        <collection property="roles" ofType="SysRole">
+            <id column="s_id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="desc" property="desc"/>
+        </collection>
+    </resultMap>
+
     <insert id="createAdmin" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sys_admin(username,password,enabled) VALUES(#{username},#{password},#{enabled})
         ON DUPLICATE KEY UPDATE username=#{username},password=#{password}
@@ -19,19 +31,19 @@
     </select>
 
     <select id="getAdminRoles" resultMap="BaseResultMap">
-        SELECT sr.id,sr.desc,sr.name,sa.id a_id,sa.name a_name,sa.path FROM sys_role sr
-        LEFT JOIN sys_role_accesses sra on sr.id=sra.roles_id
-        LEFT JOIN sys_access sa on sra.accesses_id=sa.id
-        WHERE sr.id=#{id}
+        SELECT sa.id,sa.enabled,sa.username,sa.`password`,sr.id s_id,sr.`name`,sr.`desc` FROM sys_admin sa
+        LEFT JOIN sys_admin_roles sar on sar.admin_id=sa.id
+        LEFT JOIN sys_role sr on sr.id=sar.role_id
+        WHERE sa.id=#{id}
     </select>
 
     <delete id="deleteAdminRoles">
-        DELETE FROM sys_admin WHERE roles_id=#{id}
+        DELETE FROM sys_admin_roles WHERE admin_id=#{id}
     </delete>
 
     <insert id="createAdminRoles">
-        INSERT INTO sys_admin(roles_id,accesses_id) VALUES
-        <foreach item="item" collection="accesses" separator=",">
+        INSERT INTO sys_admin_roles(admin_id,role_id) VALUES
+        <foreach item="item" collection="roles" separator=",">
             (#{id}, #{item.id})
         </foreach>
     </insert>

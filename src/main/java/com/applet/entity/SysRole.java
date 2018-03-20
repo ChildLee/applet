@@ -12,8 +12,8 @@ public class SysRole {
     @Column(name = "`desc`")
     private String desc;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(joinColumns = {@JoinColumn(name = "access_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    @JoinTable(joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "access_id", referencedColumnName = "id")})
     private List<SysAccess> accesses;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "roles")
     private List<SysAdmin> admins;

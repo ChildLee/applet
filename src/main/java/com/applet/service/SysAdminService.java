@@ -13,4 +13,8 @@ public interface SysAdminService {
     Boolean updateAdmin(SysAdmin admin);
 
     List<SysAdmin> getAdmin();
+
+    SysAdmin getAdminRole(SysAdmin admin);
+
+    Boolean createAdminRole(SysAdmin admin);
 }

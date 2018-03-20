@@ -31,17 +31,17 @@
 
     <select id="getRoleAccesses" resultMap="BaseResultMap">
         SELECT sr.id,sr.desc,sr.name,sa.id a_id,sa.name a_name,sa.path FROM sys_role sr
-        LEFT JOIN sys_role_accesses sra on sr.id=sra.roles_id
-        LEFT JOIN sys_access sa on sra.accesses_id=sa.id
+        LEFT JOIN sys_role_accesses sra on sr.id=sra.role_id
+        LEFT JOIN sys_access sa on sra.access_id=sa.id
         WHERE sr.id=#{id}
     </select>
 
     <delete id="deleteRoleAccesses">
-        DELETE FROM sys_role_accesses WHERE roles_id=#{id}
+        DELETE FROM sys_role_accesses WHERE role_id=#{id}
     </delete>
 
     <insert id="createRoleAccesses">
-        INSERT INTO sys_role_accesses(roles_id,accesses_id) VALUES
+        INSERT INTO sys_role_accesses(role_id,access_id) VALUES
         <foreach item="item" collection="accesses" separator=",">
             (#{id}, #{item.id})
         </foreach>

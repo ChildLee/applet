@@ -52,13 +52,13 @@ public class SysRoleController {
     }
 
     @PostMapping("roleAccesses")
-    public Result createRoleAccesses(Long id, String access) {
-        if (StringUtil.isNull(id)) {
+    public Result createRoleAccesses(Long id, String params) {
+        if (StringUtil.isNull(id, params)) {
             return ResultUtil.error(10001);
         }
         SysRole role = null;
         try {
-            List<SysAccess> accesses = mapper.readValue(access, new TypeReference<List<SysAccess>>() {
+            List<SysAccess> accesses = mapper.readValue(params, new TypeReference<List<SysAccess>>() {
             });
             role = new SysRole();
             role.setId(id);

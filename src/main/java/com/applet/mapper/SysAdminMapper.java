@@ -1,7 +1,6 @@
 package com.applet.mapper;
 
 import com.applet.entity.SysAdmin;
-import com.applet.entity.SysRole;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public interface SysAdminMapper {
 
     List<SysAdmin> getAdmin();
 
-    SysRole getAdminRoles(SysAdmin admin);
+    SysAdmin getAdminRoles(SysAdmin admin);
 
     Boolean deleteAdminRoles(SysAdmin admin);
 
