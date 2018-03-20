@@ -11,8 +11,12 @@ public class SysRole {
     private String name;
     @Column(name = "`desc`")
     private String desc;
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(joinColumns = {@JoinColumn(name = "access_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<SysAccess> accesses;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "roles")
+    private List<SysAdmin> admins;
 
     public Long getId() {
         return id;
@@ -46,6 +50,14 @@ public class SysRole {
         this.accesses = accesses;
     }
 
+    public List<SysAdmin> getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(List<SysAdmin> admins) {
+        this.admins = admins;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("SysRole{");
@@ -53,6 +65,7 @@ public class SysRole {
         sb.append(", name='").append(name).append('\'');
         sb.append(", desc='").append(desc).append('\'');
         sb.append(", accesses=").append(accesses);
+        sb.append(", admins=").append(admins);
         sb.append('}');
         return sb.toString();
     }

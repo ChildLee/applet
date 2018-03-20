@@ -15,6 +15,6 @@
     </update>
 
     <select id="getAccess" resultType="SysAccess">
-        select * from sys_access
+        SELECT * FROM sys_access
     </select>
 </mapper>

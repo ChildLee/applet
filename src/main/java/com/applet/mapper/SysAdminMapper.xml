@@ -2,19 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.applet.mapper.SysAdminMapper">
     <insert id="createAdmin" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_access(`name`,path) VALUES(#{name},#{path})
-        ON DUPLICATE KEY UPDATE `name`=#{name},path=#{path}
+        INSERT INTO sys_admin(username,password,enabled) VALUES(#{username},#{password},#{enabled})
+        ON DUPLICATE KEY UPDATE username=#{username},password=#{password}
     </insert>
 
     <delete id="deleteAdmin">
-        DELETE FROM sys_access WHERE id=#{id}
+        DELETE FROM sys_admin WHERE id=#{id}
     </delete>
 
     <update id="updateAdmin">
-        UPDATE sys_access SET `name`=#{name},path=#{path} WHERE id=#{id}
+        UPDATE sys_admin SET username=#{username},password=#{password} WHERE id=#{id}
     </update>
 
     <select id="getAdmin" resultType="SysAdmin">
-        select * from sys_access
+        SELECT * FROM sys_admin
     </select>
+
+    <select id="getAdminRoles" resultMap="BaseResultMap">
+        SELECT sr.id,sr.desc,sr.name,sa.id a_id,sa.name a_name,sa.path FROM sys_role sr
+        LEFT JOIN sys_role_accesses sra on sr.id=sra.roles_id
+        LEFT JOIN sys_access sa on sra.accesses_id=sa.id
+        WHERE sr.id=#{id}
+    </select>
+
+    <delete id="deleteAdminRoles">
+        DELETE FROM sys_admin WHERE roles_id=#{id}
+    </delete>
+
+    <insert id="createAdminRoles">
+        INSERT INTO sys_admin(roles_id,accesses_id) VALUES
+        <foreach item="item" collection="accesses" separator=",">
+            (#{id}, #{item.id})
+        </foreach>
+    </insert>
 </mapper>

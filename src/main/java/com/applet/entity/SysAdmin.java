@@ -11,7 +11,9 @@ public class SysAdmin {
     private String username;
     private String password;
     private boolean enabled;
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "admin_id", referencedColumnName = "id")})
     private List<SysRole> roles;
 
     public Long getId() {

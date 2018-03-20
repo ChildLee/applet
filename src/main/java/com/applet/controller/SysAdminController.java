@@ -1,7 +1,7 @@
 package com.applet.controller;
 
-import com.applet.entity.SysAccess;
-import com.applet.service.SysAccessService;
+import com.applet.entity.SysAdmin;
+import com.applet.service.SysAdminService;
 import com.applet.utils.StringUtil;
 import com.applet.utils.result.Result;
 import com.applet.utils.result.ResultUtil;
@@ -12,34 +12,35 @@ import org.springframework.web.bind.annotation.*;
 public class SysAdminController {
 
     @Autowired
-    private SysAccessService sysAccessService;
+    private SysAdminService sysAdminService;
 
-    @PostMapping("access")
-    public Result createAccess(SysAccess access) {
-        if (StringUtil.isNull(access.getName(), access.getName())) {
+    @PostMapping("admin")
+    public Result createAdmin(SysAdmin admin) {
+        if (StringUtil.isNull(admin.getUsername(), admin.getPassword())) {
             return ResultUtil.error(10001);
         }
-        return sysAccessService.createAccess(access) ? ResultUtil.success(access) : null;
+        admin.setEnabled(true);
+        return sysAdminService.createAdmin(admin) ? ResultUtil.success(admin) : null;
     }
 
-    @DeleteMapping("access")
-    public Result deleteAccess(SysAccess access) {
-        if (StringUtil.isNull(access.getId())) {
+    @DeleteMapping("admin")
+    public Result deleteAdmin(SysAdmin admin) {
+        if (StringUtil.isNull(admin.getId())) {
             return ResultUtil.error(10001);
         }
-        return ResultUtil.success(sysAccessService.deleteAccess(access));
+        return ResultUtil.success(sysAdminService.deleteAdmin(admin));
     }
 
-    @PutMapping("access")
-    public Result updateAccess(SysAccess access) {
-        if (StringUtil.isNull(access.getId(), access.getName(), access.getPath())) {
+    @PutMapping("admin")
+    public Result updateAdmin(SysAdmin admin) {
+        if (StringUtil.isNull(admin.getId(), admin.getUsername(), admin.getPassword())) {
             return ResultUtil.error(10001);
         }
-        return ResultUtil.success(sysAccessService.updateAccess(access));
+        return ResultUtil.success(sysAdminService.updateAdmin(admin));
     }
 
-    @GetMapping("access")
-    public Result getAccess() {
-        return ResultUtil.success(sysAccessService.getAccess());
+    @GetMapping("admin")
+    public Result getAdmin() {
+        return ResultUtil.success(sysAdminService.getAdmin());
     }
 }

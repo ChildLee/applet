@@ -26,11 +26,11 @@
     </update>
 
     <select id="getRole" resultType="SysRole">
-        select * from sys_role
+        SELECT * FROM sys_role
     </select>
 
     <select id="getRoleAccesses" resultMap="BaseResultMap">
-        select sr.id,sr.desc,sr.name,sa.id a_id,sa.name a_name,sa.path from sys_role sr
+        SELECT sr.id,sr.desc,sr.name,sa.id a_id,sa.name a_name,sa.path FROM sys_role sr
         LEFT JOIN sys_role_accesses sra on sr.id=sra.roles_id
         LEFT JOIN sys_access sa on sra.accesses_id=sa.id
         WHERE sr.id=#{id}
