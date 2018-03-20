@@ -1,10 +1,12 @@
 package com.applet.controller;
 
+import com.applet.entity.SysAccess;
 import com.applet.entity.SysRole;
 import com.applet.service.SysRoleService;
 import com.applet.utils.StringUtil;
 import com.applet.utils.result.Result;
 import com.applet.utils.result.ResultUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -50,20 +52,22 @@ public class SysRoleController {
     }
 
     @PostMapping("roleAccesses")
-    public Result createRoleAccesses(Integer id, String access) {
-        System.out.println(access);
-        if (StringUtil.isNull(id, access)) {
+    public Result createRoleAccesses(Long id, String access) {
+        if (StringUtil.isNull(id)) {
             return ResultUtil.error(10001);
         }
+        SysRole role = null;
         try {
-            List jsonList = mapper.readValue(access, List.class);
-            System.out.println(jsonList);
+            List<SysAccess> accesses = mapper.readValue(access, new TypeReference<List<SysAccess>>() {
+            });
+            role = new SysRole();
+            role.setId(id);
+            role.setAccesses(accesses);
         } catch (IOException e) {
-            System.out.println("权限数组解析错误");
+            System.out.println("权限解析错误");
         }
-
-
-        return null;
+        Boolean bool = sysRoleService.createRoleAccesses(role);
+        return ResultUtil.success(bool);
     }
 
     @GetMapping("roleAccesses")

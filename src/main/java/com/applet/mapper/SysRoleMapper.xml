@@ -35,4 +35,15 @@
         LEFT JOIN sys_access sa on sra.accesses_id=sa.id
         WHERE sr.id=#{id}
     </select>
+
+    <delete id="deleteRoleAccesses">
+        DELETE FROM sys_role_accesses WHERE roles_id=#{id}
+    </delete>
+
+    <insert id="createRoleAccesses">
+        INSERT INTO sys_role_accesses(roles_id,accesses_id) VALUES
+        <foreach item="item" collection="accesses" separator=",">
+            (#{id}, #{item.id})
+        </foreach>
+    </insert>
 </mapper>

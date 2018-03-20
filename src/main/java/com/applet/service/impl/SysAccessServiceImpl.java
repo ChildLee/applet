@@ -5,6 +5,7 @@ import com.applet.mapper.SysAccessMapper;
 import com.applet.service.SysAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,17 +15,19 @@ public class SysAccessServiceImpl implements SysAccessService {
     @Autowired
     private SysAccessMapper sysAccessMapper;
 
-
+    @Transactional
     @Override
     public Boolean createAccess(SysAccess access) {
         return sysAccessMapper.createAccess(access);
     }
 
+    @Transactional
     @Override
     public Boolean deleteAccess(SysAccess access) {
         return sysAccessMapper.deleteAccess(access);
     }
 
+    @Transactional
     @Override
     public Boolean updateAccess(SysAccess access) {
         return sysAccessMapper.updateAccess(access);

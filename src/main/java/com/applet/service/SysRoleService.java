@@ -15,4 +15,6 @@ public interface SysRoleService {
     List<SysRole> getRole();
 
     SysRole getRoleAccesses(SysRole role);
+
+    Boolean createRoleAccesses(SysRole role);
 }

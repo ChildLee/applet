@@ -44,6 +44,6 @@ public class ApplicationTest {
         ObjectMapper mapper = new ObjectMapper();
         List<SysAccess> accesses = mapper.readValue(a, new TypeReference<List<SysAccess>>() {
         });
-        System.out.println(accesses.get(0).getName());
+        System.out.println(accesses.get(0));
     }
 }

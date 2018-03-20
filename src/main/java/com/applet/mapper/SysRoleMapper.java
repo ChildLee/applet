@@ -17,4 +17,8 @@ public interface SysRoleMapper {
     List<SysRole> getRole();
 
     SysRole getRoleAccesses(SysRole role);
+
+    Boolean deleteRoleAccesses(SysRole role);
+
+    Boolean createRoleAccesses(SysRole role);
 }
