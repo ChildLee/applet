@@ -16,6 +16,10 @@ public class SysAdmin {
     @JoinTable(joinColumns = {@JoinColumn(name = "admin_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<SysRole> roles;
+    @OneToOne(mappedBy = "admin")
+    private SysAdminInfo adminInfo;
+    @Column(name = "`desc`")
+    private String desc;
 
     public Long getId() {
         return id;
@@ -57,6 +61,22 @@ public class SysAdmin {
         this.roles = roles;
     }
 
+    public SysAdminInfo getAdminInfo() {
+        return adminInfo;
+    }
+
+    public void setAdminInfo(SysAdminInfo adminInfo) {
+        this.adminInfo = adminInfo;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("SysAdmin{");
@@ -65,6 +85,8 @@ public class SysAdmin {
         sb.append(", password='").append(password).append('\'');
         sb.append(", enabled=").append(enabled);
         sb.append(", roles=").append(roles);
+        sb.append(", adminInfo=").append(adminInfo);
+        sb.append(", desc='").append(desc).append('\'');
         sb.append('}');
         return sb.toString();
     }

@@ -53,6 +53,7 @@ public class LoginServiceImpl implements LoginService {
                         .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                         .sign(Algorithm.HMAC256(secret));
                 map.put("token", token);
+                map.put("id", sysAdmin.getId());
                 map.put("role", sysAdmin.getRoles());
             } else {
                 return ResultUtil.error(678);

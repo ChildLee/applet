@@ -35,6 +35,12 @@ public class SysAdminServiceImpl implements SysAdminService {
         return sysAdminMapper.updateAdmin(admin);
     }
 
+    @Transactional
+    @Override
+    public Boolean updateAdminStatus(SysAdmin admin) {
+        return sysAdminMapper.updateAdminStatus(admin);
+    }
+
     @Override
     public List<SysAdmin> getAdmin() {
         return sysAdminMapper.getAdmin();

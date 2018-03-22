@@ -5,6 +5,7 @@
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
+        <result column="desc" property="desc"/>
         <result column="enabled" property="enabled"/>
         <collection property="roles" ofType="SysRole">
             <id column="s_id" property="id"/>
@@ -23,7 +24,11 @@
     </delete>
 
     <update id="updateAdmin">
-        UPDATE sys_admin SET password=#{password} WHERE id=#{id}
+        UPDATE sys_admin SET `desc`=#{desc},password=#{password} WHERE id=#{id}
+    </update>
+
+    <update id="updateAdminStatus">
+        UPDATE sys_admin SET enabled=#{enabled} WHERE id=#{id}
     </update>
 
     <select id="getAdmin" resultType="SysAdmin">
