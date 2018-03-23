@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,6 +40,11 @@ public class SysAdminServiceImpl implements SysAdminService {
     @Override
     public Boolean updateAdminStatus(SysAdmin admin) {
         return sysAdminMapper.updateAdminStatus(admin);
+    }
+
+    @Override
+    public Boolean updateLoginTime(Long id, Date date) {
+        return sysAdminMapper.updateLoginTime(id, date);
     }
 
     @Override

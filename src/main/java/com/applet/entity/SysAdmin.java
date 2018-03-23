@@ -1,6 +1,9 @@
 package com.applet.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,14 +15,15 @@ public class SysAdmin {
     private String username;
     private String password;
     private boolean enabled;
+    private String name;
+    private String app_id;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date login_time;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(joinColumns = {@JoinColumn(name = "admin_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<SysRole> roles;
-    @OneToOne(mappedBy = "admin")
-    private SysAdminInfo adminInfo;
-    @Column(name = "`desc`")
-    private String desc;
 
     public Long getId() {
         return id;
@@ -53,28 +57,36 @@ public class SysAdmin {
         this.enabled = enabled;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getApp_id() {
+        return app_id;
+    }
+
+    public void setApp_id(String app_id) {
+        this.app_id = app_id;
+    }
+
+    public Date getLogin_time() {
+        return login_time;
+    }
+
+    public void setLogin_time(Date login_time) {
+        this.login_time = login_time;
+    }
+
     public List<SysRole> getRoles() {
         return roles;
     }
 
     public void setRoles(List<SysRole> roles) {
         this.roles = roles;
-    }
-
-    public SysAdminInfo getAdminInfo() {
-        return adminInfo;
-    }
-
-    public void setAdminInfo(SysAdminInfo adminInfo) {
-        this.adminInfo = adminInfo;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
     }
 
     @Override
@@ -84,9 +96,10 @@ public class SysAdmin {
         sb.append(", username='").append(username).append('\'');
         sb.append(", password='").append(password).append('\'');
         sb.append(", enabled=").append(enabled);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", app_id='").append(app_id).append('\'');
+        sb.append(", login_time=").append(login_time);
         sb.append(", roles=").append(roles);
-        sb.append(", adminInfo=").append(adminInfo);
-        sb.append(", desc='").append(desc).append('\'');
         sb.append('}');
         return sb.toString();
     }

@@ -2,6 +2,7 @@ package com.applet.service;
 
 import com.applet.entity.SysAdmin;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SysAdminService {
@@ -13,6 +14,8 @@ public interface SysAdminService {
     Boolean updateAdmin(SysAdmin admin);
 
     Boolean updateAdminStatus(SysAdmin admin);
+
+    Boolean updateLoginTime(Long id, Date date);
 
     List<SysAdmin> getAdmin();
 

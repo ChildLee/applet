@@ -5,6 +5,9 @@
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="app_id" property="password"/>
+        <result column="login_time" property="login_time" javaType="java.util.Date"/>
         <result column="enabled" property="enabled"/>
         <collection property="roles" ofType="SysRole">
             <id column="r_id" property="id"/>
@@ -14,8 +17,7 @@
     </resultMap>
 
     <select id="findByUsername" resultMap="BaseResultMap">
-        SELECT sa.id,sa.username,sa.`password`,sa.enabled,
-        sr.`name`,sr.`desc`,sr.id r_id
+        SELECT sa.*,sr.`desc`,sr.id r_id
         FROM `sys_admin` sa
         LEFT JOIN sys_admin_roles sar ON sar.admin_id=sa.id
         LEFT JOIN sys_role sr ON sr.id=sar.role_id

@@ -5,7 +5,8 @@
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
-        <result column="desc" property="desc"/>
+        <result column="name" property="name"/>
+        <result column="app_id" property="app_id"/>
         <result column="enabled" property="enabled"/>
         <collection property="roles" ofType="SysRole">
             <id column="s_id" property="id"/>
@@ -15,8 +16,9 @@
     </resultMap>
 
     <insert id="createAdmin" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_admin(username,password,enabled) VALUES(#{username},#{password},#{enabled})
-        ON DUPLICATE KEY UPDATE username=#{username},password=#{password}
+        INSERT INTO sys_admin(username,password,enabled,app_id,name)
+        VALUES(#{username},#{password},#{enabled},#{name},#{app_id})
+        ON DUPLICATE KEY UPDATE username=#{username},password=#{password},name=#{name},app_id=#{app_id}
     </insert>
 
     <delete id="deleteAdmin">
@@ -24,7 +26,11 @@
     </delete>
 
     <update id="updateAdmin">
-        UPDATE sys_admin SET `desc`=#{desc},password=#{password} WHERE id=#{id}
+        UPDATE sys_admin SET name=#{name},password=#{password},app_id=#{app_id} WHERE id=#{id}
+    </update>
+
+    <update id="updateLoginTime">
+        UPDATE sys_admin SET login_time=#{arg1} WHERE id=#{arg0}
     </update>
 
     <update id="updateAdminStatus">
@@ -32,7 +38,7 @@
     </update>
 
     <select id="getAdmin" resultType="SysAdmin">
-        SELECT * FROM sys_admin
+        SELECT * FROM sys_admin sa
     </select>
 
     <select id="isExistsUsername" resultType="java.lang.Boolean">

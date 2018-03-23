@@ -2,6 +2,7 @@ package com.applet.service.impl;
 
 import com.applet.entity.SysAdmin;
 import com.applet.mapper.LoginMapper;
+import com.applet.mapper.SysAdminMapper;
 import com.applet.service.LoginService;
 import com.applet.utils.result.Result;
 import com.applet.utils.result.ResultUtil;
@@ -29,12 +30,16 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginMapper loginMapper;
 
+    @Autowired
+    private SysAdminMapper adminMapper;
+
     @Override
     public Result login(String username, String password) {
         Map map = null;
+        SysAdmin sysAdmin = null;
         try {
             //数据库查密码
-            SysAdmin sysAdmin = loginMapper.findByUsername(username);
+            sysAdmin = loginMapper.findByUsername(username);
             System.out.println(sysAdmin);
             //判断账号是否存在
             if (sysAdmin == null) {
@@ -52,9 +57,9 @@ public class LoginServiceImpl implements LoginService {
                         .withIssuedAt(new Date())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                         .sign(Algorithm.HMAC256(secret));
+                sysAdmin.setPassword("");
                 map.put("token", token);
-                map.put("id", sysAdmin.getId());
-                map.put("role", sysAdmin.getRoles());
+                map.put("userInfo", sysAdmin);
             } else {
                 return ResultUtil.error(678);
             }
@@ -62,6 +67,7 @@ public class LoginServiceImpl implements LoginService {
             log.error("登录生成token时出错,字符编码不受支持");
             return ResultUtil.error(-1);
         }
+        adminMapper.updateLoginTime(sysAdmin.getId(), new Date());
         return ResultUtil.success(map);
     }
 }
