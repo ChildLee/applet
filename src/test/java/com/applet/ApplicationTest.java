@@ -37,4 +37,10 @@ public class ApplicationTest {
         });
         System.out.println(accesses.get(0));
     }
+
+    @Test
+    public void aaa() {
+        String[] imgArr = null;
+        System.out.println(null == imgArr);
+    }
 }

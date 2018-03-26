@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.applet.mapper.SysCategoryMapper">
     <insert id="addCategory">
-        INSERT INTO sys_category(admin_id,`name`,`level`) VALUES(#{id},#{name},#{level})
+        INSERT INTO sys_category(admin_id,`name`,image,`level`) VALUES(#{id},#{name},#{image},#{level})
     </insert>
 
     <select id="getCategory" resultType="SysCategory">

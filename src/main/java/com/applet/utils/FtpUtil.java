@@ -4,24 +4,23 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ResourceBundle;
 
+@Component
 public class FtpUtil {
+    //读取配置文件
+    private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("application-ftp");
     //读取配置文件参数
-    @Value("${ftp.url}")
-    private static String url;
-    @Value("${ftp.port}")
-    private static int port;
-    @Value("${ftp.username}")
-    private static String username;
-    @Value("${ftp.password}")
-    private static String password;
-    @Value("${ftp.path}")
-    private static String path;
+    private static final String url = resourceBundle.getString("ftp.url");
+    private static final int port = Integer.parseInt(resourceBundle.getString("ftp.port"));
+    private static final String username = resourceBundle.getString("ftp.username");
+    private static final String password = resourceBundle.getString("ftp.password");
+    private static final String path = resourceBundle.getString("ftp.path");
     //ftp实例
     private static FTPClient ftpClient;
     //log
@@ -32,19 +31,19 @@ public class FtpUtil {
      *
      * @param files 前端input传入的图片集合
      */
-    public static Boolean fileUpload(MultipartFile[] files) {
-        Boolean result = null;
+    public static String fileUpload(MultipartFile[] files) {
+        StringBuilder sb = new StringBuilder();
         InputStream is = null;
         try {
             //连接FTP
-            if (!FtpUtil.ftpConnect()) return false;
+            if (!FtpUtil.ftpConnect()) return null;
             for (MultipartFile file : files) {
                 //获取上传的文件名
                 String fileName = file.getOriginalFilename();
                 //判断上传的文件是否为空
                 if (StringUtil.isNull(fileName)) continue;
                 //获取文件后缀
-                String suffix = fileName.substring(fileName.lastIndexOf("."));
+                String suffix = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
                 //随机字符串生成,当前时间+随机字符串=文件名
                 fileName = DateUtil.getNoFormatTime().concat(RandomUtil.getRandomString(8)).concat(suffix);
                 //将文件转成流
@@ -52,7 +51,9 @@ public class FtpUtil {
                 //图片压缩
                 is = ImageUtil.imgZip(is, suffix.substring(1));
                 //上传图片
-                result = FtpUtil.ftpUpload(fileName, is);
+                if (FtpUtil.ftpUpload(fileName, is)) {
+                    sb.append(";").append(fileName);
+                }
             }
         } catch (IOException e) {
             log.error("FTP文件上传时出错");
@@ -68,7 +69,7 @@ public class FtpUtil {
             //关闭FTP连接
             FtpUtil.closeConnect();
         }
-        return result;
+        return sb.toString().substring(1);
     }
 
     /**
@@ -144,16 +145,19 @@ public class FtpUtil {
         try {
             //切换目录,切换成功返回true
             if (!ftpClient.changeWorkingDirectory(path)) {
+                System.out.println(path);
                 //如果目录不存在创建目录
                 String[] dirs = path.split("/");
                 String path = "";
                 for (String dir : dirs) {
-                    if (null == dir || "".equals(dir)) continue;
-                    path.concat("/").concat(dir);
+                    if (StringUtil.isNull(dir)) continue;
+                    path = path.concat("/").concat(dir);
                     //切换目录失败则创建目录
                     if (!ftpClient.changeWorkingDirectory(path)) {
                         //创建失败则方法结束
                         if (!ftpClient.makeDirectory(path)) {
+                            log.error("FTP目录切换失败");
+                            System.out.println("FTP目录创建失败");
                             return false;
                         }
                     }
