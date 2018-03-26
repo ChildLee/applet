@@ -15,6 +15,6 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration interceptor = registry.addInterceptor(jwtInterceptor);
-        interceptor.excludePathPatterns("/login");
+        interceptor.excludePathPatterns("/login", "/upload/**");
     }
 }
