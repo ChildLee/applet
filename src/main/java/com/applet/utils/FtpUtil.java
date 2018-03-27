@@ -78,7 +78,7 @@ public class FtpUtil {
         InputStream is = null;
         for (MultipartFile file : files) {
             System.out.println(file.getContentType());
-            //判断上传的文件是否为空
+            //判断上传的文件是否为空或者是不是图片类型
             if (file.isEmpty() || !file.getContentType().contains("image")) continue;
             //获取上传的文件名
             String fileName = file.getOriginalFilename();
