@@ -20,6 +20,21 @@ public class SysCategoryServiceImpl implements SysCategoryService {
     }
 
     @Override
+    public Boolean deleteCategory(SysCategory category) {
+        return categoryMapper.deleteCategory(category);
+    }
+
+    @Override
+    public Boolean updateCategory(SysCategory category) {
+        return categoryMapper.updateCategory(category);
+    }
+
+    @Override
+    public Boolean updateCategoryImg(SysCategory category) {
+        return categoryMapper.updateCategoryImg(category);
+    }
+
+    @Override
     public List<SysCategory> getCategory(SysCategory category) {
         return categoryMapper.getCategory(category);
     }

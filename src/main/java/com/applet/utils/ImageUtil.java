@@ -1,5 +1,8 @@
 package com.applet.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class ImageUtil {
+    private static final Logger log = LoggerFactory.getLogger(ImageUtil.class);
+
     /**
      * 将上传的图片进行压缩后返回图片流
      *
@@ -22,7 +27,7 @@ public class ImageUtil {
         try {
             bufferedImage = ImageIO.read(is);
             //等比压缩倍数,1为正常,小于1为缩放
-            double scale = 1;
+            double scale = 0.8;
             //获取图片宽度
             int width = bufferedImage.getWidth();
             //获取图片高度
@@ -43,7 +48,8 @@ public class ImageUtil {
             ImageIO.write(outputImage, suffix, os);
             inputStream = new ByteArrayInputStream(os.toByteArray());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("图片压缩失败");
+            System.out.println("图片压缩失败");
         }
         return inputStream;
     }

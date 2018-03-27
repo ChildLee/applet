@@ -57,7 +57,7 @@ public class LoginServiceImpl implements LoginService {
                         .withIssuedAt(new Date())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                         .sign(Algorithm.HMAC256(secret));
-                sysAdmin.setPassword("");
+
                 map.put("token", token);
                 map.put("userInfo", sysAdmin);
             } else {

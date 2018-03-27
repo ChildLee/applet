@@ -27,48 +27,77 @@ public class FtpUtil {
     private static final Logger log = LoggerFactory.getLogger(FtpUtil.class);
 
     /**
+     * @param name  需要删除的文件名
+     * @param files 前端input传入的图片集合
+     * @return
+     */
+    public static String fileUpload(String name, MultipartFile[] files) {
+        String result = null;
+        try {
+            if (!FtpUtil.ftpConnect()) return null;
+            ftpDelete(name);
+            result = imgUpload(files);
+        } catch (IOException e) {
+            log.error("FTP文件上传失败");
+            System.out.println("FTP文件上传失败");
+        } finally {
+            //关闭FTP连接
+            FtpUtil.closeConnect();
+        }
+        return result;
+    }
+
+    /**
      * ftp文件上传入口
      *
      * @param files 前端input传入的图片集合
      */
     public static String fileUpload(MultipartFile[] files) {
-        StringBuilder sb = new StringBuilder();
-        InputStream is = null;
+        String result = null;
         try {
-            //连接FTP
             if (!FtpUtil.ftpConnect()) return null;
-            for (MultipartFile file : files) {
-                //获取上传的文件名
-                String fileName = file.getOriginalFilename();
-                //判断上传的文件是否为空
-                if (StringUtil.isNull(fileName)) continue;
-                //获取文件后缀
-                String suffix = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
-                //随机字符串生成,当前时间+随机字符串=文件名
-                fileName = DateUtil.getNoFormatTime().concat(RandomUtil.getRandomString(8)).concat(suffix);
-                //将文件转成流
-                is = file.getInputStream();
-                //图片压缩
-                is = ImageUtil.imgZip(is, suffix.substring(1));
-                //上传图片
-                if (FtpUtil.ftpUpload(fileName, is)) {
-                    sb.append(";").append(fileName);
-                }
-            }
+            //连接FTP
+            result = imgUpload(files);
         } catch (IOException e) {
-            log.error("FTP文件上传时出错");
-            System.out.println("FTP文件上传时出错");
+            log.error("FTP文件上传失败");
+            System.out.println("FTP文件上传失败");
         } finally {
-            //关闭流
-            try {
-                if (is != null) is.close();
-            } catch (IOException e) {
-                log.error("FTP上传时流关闭错误");
-                System.out.println("FTP上传时流关闭错误");
-            }
             //关闭FTP连接
             FtpUtil.closeConnect();
         }
+        return result;
+    }
+
+    /**
+     * ftp图片上传入口
+     *
+     * @param files 前端input传入的图片集合
+     */
+    private static String imgUpload(MultipartFile[] files) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        InputStream is = null;
+        for (MultipartFile file : files) {
+            System.out.println(file.getContentType());
+            //判断上传的文件是否为空
+            if (file.isEmpty() || !file.getContentType().contains("image")) continue;
+            //获取上传的文件名
+            String fileName = file.getOriginalFilename();
+            //获取文件后缀
+            String suffix = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
+            //随机字符串生成,当前时间+随机字符串=文件名
+            fileName = DateUtil.getNoFormatTime().concat(RandomUtil.getRandomString(8)).concat(suffix);
+            //将文件转成流
+            is = file.getInputStream();
+            //图片压缩
+            is = ImageUtil.imgZip(is, suffix.substring(1));
+            //上传图片
+            if (FtpUtil.ftpUpload(fileName, is)) {
+                sb.append(";").append(fileName);
+            }
+        }
+        if (is != null) is.close();
+        System.out.println(sb.equals(""));
+        System.out.println(sb.equals(null));
         return sb.toString().substring(1);
     }
 
@@ -85,8 +114,8 @@ public class FtpUtil {
             if (!FtpUtil.ftpConnect()) return false;
             result = ftpDelete(name);
         } catch (IOException e) {
-            log.error("FTP上传时流关闭错误");
-            System.out.println("FTP上传时流关闭错误");
+            log.info("FTP文件删除失败");
+            System.out.println("FTP文件删除失败");
         } finally {
             FtpUtil.closeConnect();
         }
@@ -99,39 +128,34 @@ public class FtpUtil {
      *
      * @return 是否连接成功
      */
-    private static boolean ftpConnect() {
+    private static boolean ftpConnect() throws IOException {
         //实例化一个ftp客户端
         ftpClient = new FTPClient();
-        try {
-            //建立ftp连接
-            ftpClient.connect(url, port);
-            //输入ftp账号密码
-            ftpClient.login(username, password);
-            //主动模式
-            //ftpClient.enterLocalActiveMode();
-            //被动模式
-            ftpClient.enterLocalPassiveMode();
-            // 看返回的值是不是230，如果是，表示登陆成功
-            int reply = ftpClient.getReplyCode();
-            //判断是否连接成功
-            if (!FTPReply.isPositiveCompletion(reply)) {
-                log.info("FTP连接失败");
-                System.out.println("FTP连接失败");
-                //连接失败时断开连接
-                ftpClient.disconnect();
-                //返回false
-                return false;
-            }
-            //设置ftp连接目录
-            if (!isDirectory()) return false;
-            //设置文件编码格式
-            //ftpClient.setControlEncoding("GBK");
-            //设置文件类型（二进制）
-            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
-        } catch (IOException e) {
-            log.error("FTP连接错误");
-            System.out.println("FTP连接错误");
+        //建立ftp连接
+        ftpClient.connect(url, port);
+        //输入ftp账号密码
+        ftpClient.login(username, password);
+        //主动模式
+        //ftpClient.enterLocalActiveMode();
+        //被动模式
+        ftpClient.enterLocalPassiveMode();
+        //看返回的值是不是230，如果是，表示登陆成功
+        int reply = ftpClient.getReplyCode();
+        //判断是否连接成功
+        if (!FTPReply.isPositiveCompletion(reply)) {
+            log.info("FTP连接失败");
+            System.out.println("FTP连接失败");
+            //连接失败时断开连接
+            ftpClient.disconnect();
+            //返回false
+            return false;
         }
+        //设置ftp连接目录
+        if (!isDirectory()) return false;
+        //设置文件编码格式
+        //ftpClient.setControlEncoding("GBK");
+        //设置文件类型（二进制）
+        ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
         return true;
     }
 
@@ -141,33 +165,28 @@ public class FtpUtil {
      *
      * @return 目录是否连接成功
      */
-    private static Boolean isDirectory() {
-        try {
-            //切换目录,切换成功返回true
-            if (!ftpClient.changeWorkingDirectory(path)) {
-                System.out.println(path);
-                //如果目录不存在创建目录
-                String[] dirs = path.split("/");
-                String path = "";
-                for (String dir : dirs) {
-                    if (StringUtil.isNull(dir)) continue;
-                    path = path.concat("/").concat(dir);
-                    //切换目录失败则创建目录
-                    if (!ftpClient.changeWorkingDirectory(path)) {
-                        //创建失败则方法结束
-                        if (!ftpClient.makeDirectory(path)) {
-                            log.error("FTP目录切换失败");
-                            System.out.println("FTP目录创建失败");
-                            return false;
-                        }
+    private static Boolean isDirectory() throws IOException {
+        //切换目录,切换成功返回true
+        if (!ftpClient.changeWorkingDirectory(path)) {
+            System.out.println(path);
+            //如果目录不存在创建目录
+            String[] dirs = path.split("/");
+            String path = "";
+            for (String dir : dirs) {
+                if (StringUtil.isNull(dir)) continue;
+                path = path.concat("/").concat(dir);
+                //切换目录失败则创建目录
+                if (!ftpClient.changeWorkingDirectory(path)) {
+                    //创建失败则方法结束
+                    if (!ftpClient.makeDirectory(path)) {
+                        log.error("FTP目录切换失败");
+                        System.out.println("FTP目录创建失败");
+                        return false;
                     }
                 }
-                //目录创建成功,切换到该目录
-                ftpClient.changeWorkingDirectory(path);
             }
-        } catch (IOException e) {
-            log.error("FTP目录切换失败");
-            System.out.println("FTP目录切换失败");
+            //目录创建成功,切换到该目录
+            ftpClient.changeWorkingDirectory(path);
         }
         return true;
     }
@@ -209,8 +228,8 @@ public class FtpUtil {
                 ftpClient.disconnect();
             }
         } catch (IOException e) {
-            log.error("FTP连接断开失败");
-            System.out.println("FTP连接断开失败");
+            log.info("FTP关闭失败");
+            System.out.println("FTP关闭失败");
         }
     }
 }

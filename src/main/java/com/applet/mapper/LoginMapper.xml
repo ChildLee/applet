@@ -6,7 +6,7 @@
         <result column="username" property="username"/>
         <result column="password" property="password"/>
         <result column="name" property="name"/>
-        <result column="app_id" property="password"/>
+        <result column="app_id" property="app_id"/>
         <result column="login_time" property="login_time" javaType="java.util.Date"/>
         <result column="enabled" property="enabled"/>
         <collection property="roles" ofType="SysRole">
