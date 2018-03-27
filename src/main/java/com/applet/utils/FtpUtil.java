@@ -96,8 +96,7 @@ public class FtpUtil {
             }
         }
         if (is != null) is.close();
-        String result = sb.toString();
-        return result.equals("") ? null : result.substring(1);
+        return sb.length() > 0 ? sb.toString().substring(1) : null;
     }
 
     /**
