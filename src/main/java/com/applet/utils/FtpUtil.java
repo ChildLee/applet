@@ -35,8 +35,10 @@ public class FtpUtil {
         String result = null;
         try {
             if (!FtpUtil.ftpConnect()) return null;
-            ftpDelete(name);
             result = imgUpload(files);
+            if (!StringUtil.isNull(result)) {
+                ftpDelete(name);
+            }
         } catch (IOException e) {
             log.error("FTP文件上传失败");
             System.out.println("FTP文件上传失败");

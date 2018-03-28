@@ -23,7 +23,7 @@ public class SysCategoryController {
             return ResultUtil.error(10001);
         }
         String imgArr = FtpUtil.fileUpload(file);
-        if (StringUtil.isNull(imgArr)) return ResultUtil.error("上传图片时出错");
+        if (StringUtil.isNull(imgArr)) return ResultUtil.error("图片上传失败,请检查图片");
         SysCategory category = new SysCategory();
         category.setId(categoryDTO.getId());
         category.setName(categoryDTO.getName().trim());
@@ -39,7 +39,7 @@ public class SysCategoryController {
             return ResultUtil.error(10001);
         }
         String imgArr = FtpUtil.fileUpload(categoryDTO.getImage(), file);
-        if (StringUtil.isNull(imgArr)) return ResultUtil.error("上传图片时出错");
+        if (StringUtil.isNull(imgArr)) return ResultUtil.error("图片上传失败,请检查图片");
         SysCategory category = new SysCategory();
         category.setId(categoryDTO.getId());
         category.setImage(imgArr);
