@@ -19,7 +19,6 @@ public class SysAccessController {
         if (StringUtil.isNull(access.getName(), access.getName())) {
             return ResultUtil.error(10001);
         }
-
         return sysAccessService.createAccess(access) ? ResultUtil.success(access) : ResultUtil.error("权限已存在");
     }
 
