@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 public class Application {
     public void bb() {
-
+        System.out.println("154dfhgfjh");
     }
 
     public static void main(String[] args) {
