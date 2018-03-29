@@ -15,6 +15,10 @@ public class Application {
         System.out.println("ppppppppppppppppppppp");
     }
 
+    public void  aaa(){
+        System.out.println("123");
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
