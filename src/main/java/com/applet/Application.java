@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @SpringBootApplication
 public class Application {
-    public void a() {
-        System.out.println(1);
+    public void bb() {
+        System.out.println("154dfhgfjh");
     }
 
     public static void main(String[] args) {
