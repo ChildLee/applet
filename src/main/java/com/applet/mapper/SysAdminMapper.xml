@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.SysAdminMapper">
+    <resultMap id="BaseResultMap" type="SysAdmin">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="app_id" property="app_id"/>
+        <result column="enabled" property="enabled"/>
+        <collection property="roles" ofType="SysRole">
+            <id column="s_id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="desc" property="desc"/>
+        </collection>
+    </resultMap>
+
+    <insert id="createAdmin" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_admin(username,password,enabled,app_id,name)
+        VALUES(#{username},#{password},#{enabled},#{name},#{app_id})
+        ON DUPLICATE KEY UPDATE username=#{username},password=#{password},name=#{name},app_id=#{app_id}
+    </insert>
+
+    <delete id="deleteAdmin">
+        DELETE FROM sys_admin WHERE id=#{id}
+    </delete>
+
+    <update id="updateAdmin">
+        UPDATE sys_admin SET name=#{name},password=#{password},app_id=#{app_id} WHERE id=#{id}
+    </update>
+
+    <update id="updateLoginTime">
+        UPDATE sys_admin SET login_time=#{arg1} WHERE id=#{arg0}
+    </update>
+
+    <update id="updateAdminStatus">
+        UPDATE sys_admin SET enabled=#{enabled} WHERE id=#{id}
+    </update>
+
+    <select id="getAdmin" resultType="SysAdmin">
+        SELECT * FROM sys_admin sa
+    </select>
+
+    <select id="isExistsUsername" resultType="java.lang.Boolean">
+        SELECT count(*) FROM sys_admin WHERE username=#{username}
+    </select>
+
+    <select id="getAdminRoles" resultMap="BaseResultMap">
+        SELECT sa.id,sa.enabled,sa.username,sa.`password`,sr.id s_id,sr.`name`,sr.`desc` FROM sys_admin sa
+        LEFT JOIN sys_admin_roles sar on sar.admin_id=sa.id
+        LEFT JOIN sys_role sr on sr.id=sar.role_id
+        WHERE sa.id=#{id}
+    </select>
+
+    <delete id="deleteAdminRoles">
+        DELETE FROM sys_admin_roles WHERE admin_id=#{id}
+    </delete>
+
+    <insert id="createAdminRoles">
+        INSERT INTO sys_admin_roles(admin_id,role_id) VALUES
+        <foreach item="item" collection="roles" separator=",">
+            (#{id}, #{item.id})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.SysRoleMapper">
+    <resultMap id="BaseResultMap" type="SysRole">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="desc" property="desc"/>
+        <collection property="accesses" ofType="SysAccess">
+            <id column="a_id" property="id"/>
+            <result column="a_name" property="name"/>
+            <result column="path" property="path"/>
+        </collection>
+    </resultMap>
+
+    <insert id="createRole" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_role(`name`,`desc`) VALUES(#{name},#{desc})
+        ON DUPLICATE KEY UPDATE `name`=#{name},`desc`=#{desc}
+    </insert>
+
+    <delete id="deleteRole">
+        DELETE FROM sys_role WHERE id=#{id}
+    </delete>
+
+    <update id="updateRole">
+        UPDATE sys_role SET `desc`=#{desc} WHERE id=#{id}
+    </update>
+
+    <select id="getRole" resultType="SysRole">
+        SELECT * FROM sys_role
+    </select>
+
+    <select id="isExistsRole" resultType="java.lang.Boolean">
+        SELECT count(*) FROM sys_role WHERE name=#{name}
+    </select>
+
+    <select id="getRoleAccesses" resultMap="BaseResultMap">
+        SELECT sr.id,sr.desc,sr.name,sa.id a_id,sa.name a_name,sa.path FROM sys_role sr
+        LEFT JOIN sys_role_accesses sra on sr.id=sra.role_id
+        LEFT JOIN sys_access sa on sra.access_id=sa.id
+        WHERE sr.id=#{id}
+    </select>
+
+    <delete id="deleteRoleAccesses">
+        DELETE FROM sys_role_accesses WHERE role_id=#{id}
+    </delete>
+
+    <insert id="createRoleAccesses">
+        INSERT INTO sys_role_accesses(role_id,access_id) VALUES
+        <foreach item="item" collection="accesses" separator=",">
+            (#{id}, #{item.id})
+        </foreach>
+    </insert>
+</mapper>

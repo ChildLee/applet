@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.SysAccessMapper">
+    <insert id="createAccess" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_access(`name`,path) VALUES(#{name},#{path})
+        ON DUPLICATE KEY UPDATE `name`=#{name},path=#{path}
+    </insert>
+
+    <delete id="deleteAccess">
+        DELETE FROM sys_access WHERE id=#{id}
+    </delete>
+
+    <update id="updateAccess">
+        UPDATE sys_access SET `name`=#{name} WHERE id=#{id}
+    </update>
+
+    <select id="getAccess" resultType="SysAccess">
+        SELECT * FROM sys_access
+    </select>
+
+    <select id="isExistsAccess" resultType="java.lang.Boolean">
+        SELECT count(*) FROM sys_access WHERE path=#{path}
+    </select>
+</mapper>

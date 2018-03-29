@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.SysCategoryMapper">
+    <insert id="addCategory">
+        INSERT INTO sys_category(admin_id,`name`,image,`level`) VALUES(#{id},#{name},#{image},#{level})
+    </insert>
+
+    <delete id="deleteCategory">
+        DELETE FROM sys_category WHERE id=#{id}
+    </delete>
+
+    <update id="updateCategory">
+        UPDATE sys_category SET `name`=#{name} WHERE id=#{id}
+    </update>
+
+    <update id="updateCategoryImg">
+        UPDATE sys_category SET image=#{image} WHERE id=#{id}
+    </update>
+
+    <select id="getCategory" resultType="SysCategory">
+        SELECT * FROM sys_category WHERE admin_id=#{id}
+    </select>
+</mapper>

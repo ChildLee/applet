@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.LoginMapper">
+    <resultMap id="BaseResultMap" type="SysAdmin">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="app_id" property="app_id"/>
+        <result column="login_time" property="login_time" javaType="java.util.Date"/>
+        <result column="enabled" property="enabled"/>
+        <collection property="roles" ofType="SysRole">
+            <id column="r_id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="desc" property="desc"/>
+        </collection>
+    </resultMap>
+
+    <select id="findByUsername" resultMap="BaseResultMap">
+        SELECT sa.*,sr.`desc`,sr.id r_id
+        FROM `sys_admin` sa
+        LEFT JOIN sys_admin_roles sar ON sar.admin_id=sa.id
+        LEFT JOIN sys_role sr ON sr.id=sar.role_id
+        WHERE sa.username=#{username}
+    </select>
+
+</mapper>
