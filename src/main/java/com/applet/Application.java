@@ -9,10 +9,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @SpringBootApplication
 public class Application {
-    public void bb() {
-        System.out.println("154dfhgfjh");
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
